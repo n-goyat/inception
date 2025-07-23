@@ -1,14 +1,19 @@
-
 FROM debian:latest
 
 RUN apt update && apt upgrade && apt install -y \
-	nginx \
+	php-fpm \
+	php-mysql \
+	php-xml \
+	php-curl \
+	php-mbstring \
+	php-zip \
+	php-gd \
 	curl \
 	vim \
 	iputils-ping \
 	net-tools \
 	&& rm -rf /var/lib/apt/lists/*
 
-COPY default /etc/nginx/sites-available/.
+COPY www.conf /etc/php/8.2/fpm/pool.d/.
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["php-fpm8.2", "-F"]
