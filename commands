@@ -1,0 +1,9 @@
+docker compose down
+docker compose build
+docker compose up
+
+// show running containers //
+docker ps
+
+// start/stop container //
+docker start/stop nginx
