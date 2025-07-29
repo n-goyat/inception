@@ -8,9 +8,38 @@ services:
       - "80:80"
     volumes:
       - ./web:/var/www/html
+    depends_on:
+      - wordpress
 
   wordpress:
     build: requirements/wordpress/.
     container_name: wp-php
     volumes:
       - ./web:/var/www/html
+    depends_on:
+      - mariadb
+    # environment:
+    #   WORDPRESS_DB_HOST: ${ENV_ADMIN_USER}
+    #   WORDPRESS_DB_USER: 
+    #   WORDPRESS_DB_PASSWORD: 
+    #   WORDPRESS_DB_NAME: 
+
+  mariadb:
+    build: requirements/mariadb/.
+    container_name: mariadb
+
+# volumes:
+#   db_data:
+#     driver: local
+#   web_data:
+#     driver: local
+#   nginx_data:
+#     driver: local
+#   wordpress_data: 
+#     driver: local
+#   mariadb_data:
+#     driver: local
+# networks:   
+#   default:
+#     driver: bridge
+#     name: wp_network

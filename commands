@@ -7,3 +7,9 @@ docker ps
 
 // start/stop container //
 docker start/stop nginx
+
+
+
+// Im Browser
+http://localhost/
+http://localhost/wp-admin

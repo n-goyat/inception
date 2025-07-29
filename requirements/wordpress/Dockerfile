@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:bullseye
 
 RUN apt update && apt upgrade && apt install -y \
 	php-fpm \
@@ -14,6 +14,15 @@ RUN apt update && apt upgrade && apt install -y \
 	net-tools \
 	&& rm -rf /var/lib/apt/lists/*
 
-COPY www.conf /etc/php/8.2/fpm/pool.d/.
+COPY www.conf /etc/php/7.4/fpm/pool.d/.
+COPY script.sh .
+RUN chmod +x script.sh
+# RUN mkdir /run/php/php7.4-fpm.pid
+RUN mkdir /run/php/
 
-CMD ["php-fpm8.2", "-F"]
+# RUN openssl x509 -req -days 365 -in yourdomain.csr -signkey yourdomain.key -out yourdomain.crt \
+# 	&& mv yourdomain.key /etc/ssl/private/ \
+# 	&& mv yourdomain.crt /etc/ssl/certs/ \
+# 	&& rm yourdomain.csr
+
+CMD ["./script.sh"]
