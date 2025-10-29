@@ -6,6 +6,7 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./web:/var/www/html
     depends_on:
@@ -18,16 +19,26 @@ services:
       - ./web:/var/www/html
     depends_on:
       - mariadb
-    # environment:
-    #   WORDPRESS_DB_HOST: ${ENV_ADMIN_USER}
-    #   WORDPRESS_DB_USER: 
-    #   WORDPRESS_DB_PASSWORD: 
-    #   WORDPRESS_DB_NAME: 
+    environment:
+      WP_NAME: ${WP_NAME}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_DBUSER: ${WP_DBUSER}
+      WP_EMAIL: ${WP_EMAIL}
+      WP_PASSWORD: ${WP_PASSWORD}
 
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
-
+    ports:
+    - "3306:3306"
+    environment:
+      MYSQL_DBNAME: ${DB_NAME}
+      MYSQL_USER: ${DB_ADMIN}
+      MYSQL_ROOT_PASSWORD: ${DB_ADMIN_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
 # volumes:
 #   db_data:
 #     driver: local
