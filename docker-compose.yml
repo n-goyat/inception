@@ -9,48 +9,59 @@ services:
       - "443:443"
     volumes:
       - ./web:/var/www/html
+      - ./requirements/nginx/certs:/etc/nginx/certs
     depends_on:
       - wordpress
+    networks:
+      - Inception
 
   wordpress:
-    build: requirements/wordpress/.
+    build: wordpress/.
     container_name: wp-php
     volumes:
       - ./web:/var/www/html
     depends_on:
       - mariadb
     environment:
-      WP_NAME: ${WP_NAME}
-      WP_ADMIN_USER: ${WP_ADMIN_USER}
-      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
-      WP_DBUSER: ${WP_DBUSER}
-      WP_EMAIL: ${WP_EMAIL}
-      WP_PASSWORD: ${WP_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${WP_DBUSER}
+      WORDPRESS_DB_PASSWORD: ${WP_PASSWORD}
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_ADMIN_USER: ${WP_ADMIN_USER}
+      WORDPRESS_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WORDPRESS_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - Inception
 
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
     ports:
-    - "3306:3306"
+      - "3306:3306"
     environment:
-      MYSQL_DBNAME: ${DB_NAME}
-      MYSQL_USER: ${DB_ADMIN}
-      MYSQL_ROOT_PASSWORD: ${DB_ADMIN_PASSWORD}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-# volumes:
+      MYSQL_DATABASE: ${DB_NAME}                 # Name der Datenbank
+      MYSQL_ROOT_PASSWORD: ${DB_ADMIN_PASSWORD}  # Root-Passwort
+      MYSQL_USER: ${DB_USER}                     # zusätzlicher User
+      MYSQL_PASSWORD: ${DB_PASSWORD}             # Passwort für zusätzlichen User
+    volumes:
+      - mariadb_data:/var/lib/mysql  
+    networks:
+      - Inception
+
+volumes:
 #   db_data:
 #     driver: local
 #   web_data:
 #     driver: local
 #   nginx_data:
 #     driver: local
-#   wordpress_data: 
-#     driver: local
-#   mariadb_data:
-#     driver: local
-# networks:   
-#   default:
-#     driver: bridge
-#     name: wp_network
+   wordpress_data: 
+     driver: local
+   mariadb_data:
+     driver: local
+
+networks:   
+   Inception:
+     driver: bridge

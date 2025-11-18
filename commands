@@ -13,3 +13,7 @@ docker start/stop nginx
 // Im Browser
 http://localhost/
 http://localhost/wp-admin
+
+// inplement ssl certificate creation
+// implement port 80 -> redirect to port 443
+// und dann goa goa,ja, Ja !
