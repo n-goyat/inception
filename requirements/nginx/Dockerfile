@@ -1,16 +1,13 @@
-
 FROM debian:bullseye
 
-RUN apt update && apt upgrade && apt install -y \
-	nginx \
-	curl \
-	vim \
-	iputils-ping \
-	net-tools \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt update && apt upgrade -y && apt install -y \
+    nginx \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY nginx.conf /etc/nginx/nginx.conf:ro
-# COPY /etc/nginx/sites-enabled/.
+RUN rm -f /etc/nginx/sites-enabled/default \
+    && rm -f /etc/nginx/conf.d/default.conf
 
+COPY nginx.conf /etc/nginx/conf.d/inception.conf
 
 CMD ["nginx", "-g", "daemon off;"]

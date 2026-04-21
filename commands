@@ -2,6 +2,18 @@ docker compose down
 docker compose build
 docker compose up
 
+# Alles was Docker nicht aktiv braucht löschen
+docker system prune -af --volumes
+
+# Danach prüfen wieviel Platz frei ist
+df -h /goinfre
+
+# Falls immer noch zu wenig — einzeln aufräumen:
+docker images prune -af        # alle ungenutzten images
+docker volume prune -f         # alle ungenutzten volumes
+docker container prune -f      # alle gestoppten container
+docker builder prune -af       # build cache (oft der größte Verursacher)
+
 // show running containers //
 docker ps
 

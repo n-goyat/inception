@@ -2,28 +2,29 @@
 CERT_DIR=requirements/nginx/certs
 DOMAIN=localhost
 COMPOSE = ./docker-compose.yml
+COMPOSE_CMD = docker compose
 
 .SILENT:
 
 all: print_g build up
 
 build:
-	docker-compose -f $(COMPOSE) build
+	$(COMPOSE_CMD) -f $(COMPOSE) build
 	
 up:
-	docker-compose -f $(COMPOSE) up -d
+	$(COMPOSE_CMD) -f $(COMPOSE) up -d
 
 down:
-	docker-compose -f $(COMPOSE) down
+	$(COMPOSE_CMD) -f $(COMPOSE) down
 
 re: down clean build up
 
 clean:
-	docker-compose -f $(COMPOSE) down --volumes --rmi all --remove-orphans
+	$(COMPOSE_CMD) -f $(COMPOSE) down --volumes --rmi all --remove-orphans
 	docker system prune -f
 
 logs:
-	docker-compose -f $(COMPOSE) logs -f
+	$(COMPOSE_CMD) -f $(COMPOSE) logs -f
 
 certs:
 	@mkdir -p $(CERT_DIR)
@@ -40,4 +41,4 @@ print_g:
 
 
 
-.PHONY: all build up down clean
+.PHONY: all build up down clean re logs certs

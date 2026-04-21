@@ -1,14 +1,14 @@
-version: "3.8"
+#version: "3.8"
 
 services:
   nginx:
     build: requirements/nginx/.
     container_name: nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "8443:443"
     volumes:
-      - ./web:/var/www/html
+      - wordpress_data:/var/www/html:ro
       - ./requirements/nginx/certs:/etc/nginx/certs
     depends_on:
       - wordpress
@@ -16,21 +16,21 @@ services:
       - Inception
 
   wordpress:
-    build: wordpress/.
+    build: requirements/wordpress/.
     container_name: wp-php
-    volumes:
-      - ./web:/var/www/html
     depends_on:
       - mariadb
     environment:
-      WORDPRESS_DB_NAME: ${WP_NAME}
-      WORDPRESS_ADMIN_USER: ${WP_ADMIN_USER}
-      WORDPRESS_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
-      WORDPRESS_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
-      WORDPRESS_DB_USER: ${WP_DBUSER}
-      WORDPRESS_USER_EMAIL: ${WP_EMAIL}
-      WORDPRESS_DB_PASSWORD: ${WP_PASSWORD}
-      WORDPRESS_DB_HOST: mariadb:3306
+      DOMAIN: ${DOMAIN}
+      WP_NAME: ${WP_NAME}
+      WP_DBUSER: ${WP_DBUSER}
+      WP_PASSWORD: ${WP_PASSWORD}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_USER: ${WP_USER}
+      WP_EMAIL: ${WP_EMAIL}
+      WP_USER_PASSWORD: ${WP_USER_PASSWORD}
     volumes:
       - wordpress_data:/var/www/html
     networks:
@@ -39,31 +39,22 @@ services:
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_DATABASE: ${DB_NAME}                 # Name der Datenbank
-      MYSQSL_DB_ADMIN: ${DB_ADMIN}              # Admin-User
-      MYSQL_ROOT_PASSWORD: ${DB_ADMIN_PASSWORD}  # Root-Passwort
-      MYSQL_USER: ${DB_USER}                     # zusätzlicher User
-      MYSQL_PASSWORD: ${DB_PASSWORD}             # Passwort für zusätzlichen User
+      WP_NAME: ${WP_NAME}
+      WP_DBUSER: ${WP_DBUSER}
+      WP_PASSWORD: ${WP_PASSWORD}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
-      - mariadb_data:/var/lib/mysql  
+      - mariadb_data:/var/lib/mysql
     networks:
       - Inception
 
 volumes:
-#   db_data:
-#     driver: local
-#   web_data:
-#     driver: local
-#   nginx_data:
-#     driver: local
-   wordpress_data: 
-     driver: local
-   mariadb_data:
-     driver: local
+  wordpress_data:
+    driver: local
+  mariadb_data:
+    driver: local
 
-networks:   
-   Inception:
-     driver: bridge
+networks:
+  Inception:
+    driver: bridge

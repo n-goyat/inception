@@ -1,18 +1,15 @@
 FROM debian:bullseye
 
-RUN apt update && apt upgrade && apt install -y \
-	mariadb-server \
-	mariadb-client \
-	curl \
-	vim \
-	iputils-ping \
-	net-tools \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt update && apt upgrade -y && apt install -y \
+    mariadb-server \
+    mariadb-client \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY 50-server.cnf /etc/mysql/mariadb.conf.d/.
-COPY ./init.sql /etc/mysql/init.sql
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
+COPY 50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-RUN mkdir /run/mysqld
-
-CMD ["mysqld"]
+CMD ["/entrypoint.sh"]
