@@ -17,6 +17,9 @@ docker builder prune -af       # build cache (oft der größte Verursacher)
 // show running containers //
 docker ps
 
+// logs
+docker compose logs -f
+
 // start/stop container //
 docker start/stop nginx
 
@@ -26,6 +29,8 @@ docker start/stop nginx
 http://localhost/
 http://localhost/wp-admin
 
-// inplement ssl certificate creation
-// implement port 80 -> redirect to port 443
-// und dann goa goa,ja, Ja !
+// connect ssh
+nc -zv 127.0.0.1 2222
+ssh ngoyat@127.0.0.1 -p 2222
+cd ~/inception
+make
