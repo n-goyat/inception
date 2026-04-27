@@ -1,6 +1,6 @@
 
 CERT_DIR=requirements/nginx/certs
-DOMAIN=localhost
+DOMAIN=ngoyat.42.fr
 COMPOSE = ./docker-compose.yml
 COMPOSE_CMD = docker compose
 

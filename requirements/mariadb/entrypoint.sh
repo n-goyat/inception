@@ -15,7 +15,8 @@ GRANT ALL PRIVILEGES ON \`${WP_NAME}\`.* TO '${WP_DBUSER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-wait $MYSQL_PID
+mysqladmin -u root shutdown
+exec mysqld_safe
 
 #Das Bash-Script startet mysqld im Hintergrund, wartet kurz, 
 #führt dann mysql aus. Zu diesem Zeitpunkt sind die Env-Variablen aus docker-compose 
