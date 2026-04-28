@@ -29,6 +29,7 @@ MariaDB
 2. Create a `.env` file:
 
 ```env
+cat > ~/inception/srcs/.env << 'EOF'
 DOMAIN=ngoyat.42.fr
 WP_NAME=wordpress
 WP_DBUSER=wpuser
@@ -40,6 +41,7 @@ WP_USER=nate
 WP_EMAIL=user@ngoyat.42.fr
 WP_USER_PASSWORD=userpass123
 DB_ROOT_PASSWORD=rootpass123
+EOF
 ```
 
 3. Add domain to `/etc/hosts`:
