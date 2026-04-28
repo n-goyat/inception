@@ -2,7 +2,7 @@
 
 services:
   nginx:
-    build: requirements/nginx/.
+    build: ./srcs/requirements/nginx/.
     container_name: nginx
     ports:
       - "80:80"
@@ -16,7 +16,7 @@ services:
       - Inception
 
   wordpress:
-    build: requirements/wordpress/.
+    build: ./srcs/requirements/wordpress/.
     container_name: wp-php
     depends_on:
       - mariadb
@@ -37,7 +37,7 @@ services:
       - Inception
 
   mariadb:
-    build: requirements/mariadb/.
+    build: ./srcs/requirements/mariadb/.
     container_name: mariadb
     environment:
       WP_NAME: ${WP_NAME}

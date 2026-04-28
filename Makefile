@@ -1,7 +1,7 @@
 
-CERT_DIR=requirements/nginx/certs
+CERT_DIR=srcs/requirements/nginx/certs
 DOMAIN=ngoyat.42.fr
-COMPOSE = ./docker-compose.yml
+COMPOSE = srcs/docker-compose.yml
 COMPOSE_CMD = docker compose
 
 .SILENT:
