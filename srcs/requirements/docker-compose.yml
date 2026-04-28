@@ -1,23 +1,24 @@
-#version: "3.8"
-
 services:
   nginx:
-    build: ./srcs/requirements/nginx/.
+    build: requirements/nginx/.
+    image: nginx
     container_name: nginx
+    restart: unless-stopped
     ports:
-      - "80:80"
       - "443:443"
     volumes:
       - wordpress_data:/var/www/html:ro
-      - ./srcs/requirements/nginx/certs:/etc/nginx/certs
+      - ./requirements/nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - wordpress
     networks:
       - Inception
 
   wordpress:
-    build: ./srcs/requirements/wordpress/.
+    build: requirements/wordpress/.
+    image: wordpress
     container_name: wp-php
+    restart: unless-stopped
     depends_on:
       - mariadb
     environment:
@@ -37,8 +38,10 @@ services:
       - Inception
 
   mariadb:
-    build: ./srcs/requirements/mariadb/.
+    build: requirements/mariadb/.
+    image: mariadb
     container_name: mariadb
+    restart: unless-stopped
     environment:
       WP_NAME: ${WP_NAME}
       WP_DBUSER: ${WP_DBUSER}
@@ -52,8 +55,16 @@ services:
 volumes:
   wordpress_data:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ngoyat/data/wordpress
   mariadb_data:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ngoyat/data/mariadb
 
 networks:
   Inception:

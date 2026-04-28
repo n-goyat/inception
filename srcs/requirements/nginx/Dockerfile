@@ -2,12 +2,14 @@ FROM debian:bullseye
 
 RUN apt update && apt upgrade -y && apt install -y \
     nginx \
-    curl \
+    openssl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN rm -f /etc/nginx/sites-enabled/default \
     && rm -f /etc/nginx/conf.d/default.conf
 
 COPY nginx.conf /etc/nginx/conf.d/inception.conf
+
+EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]

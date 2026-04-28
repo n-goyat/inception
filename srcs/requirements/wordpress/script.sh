@@ -1,26 +1,27 @@
 #!/bin/bash
+set -e
 
 cd /var/www/html
 
-# WP-CLI herunterladen
+# Install WP-CLI if not present
 if [ ! -f /usr/local/bin/wp ]; then
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     chmod +x wp-cli.phar
     mv wp-cli.phar /usr/local/bin/wp
 fi
 
-# Warten bis MariaDB bereit ist
+# Wait for MariaDB
 until mysqladmin ping -h mariadb -u "${WP_DBUSER}" -p"${WP_PASSWORD}" --silent 2>/dev/null; do
-    echo "Warte auf MariaDB..."
+    echo "Waiting for MariaDB..."
     sleep 2
 done
 
-# WordPress Core herunterladen
+# Download WordPress core
 if [ ! -f wp-load.php ]; then
     wp core download --allow-root
 fi
 
-# wp-config.php erstellen
+# Create wp-config.php
 if [ ! -f wp-config.php ]; then
     wp config create \
         --dbname="${WP_NAME}" \
@@ -30,7 +31,7 @@ if [ ! -f wp-config.php ]; then
         --allow-root
 fi
 
-# WordPress installieren
+# Install WordPress
 if ! wp core is-installed --allow-root 2>/dev/null; then
     wp core install \
         --url="https://${DOMAIN}" \
@@ -38,8 +39,10 @@ if ! wp core is-installed --allow-root 2>/dev/null; then
         --admin_user="${WP_ADMIN_USER}" \
         --admin_password="${WP_ADMIN_PASSWORD}" \
         --admin_email="${WP_ADMIN_EMAIL}" \
+        --skip-email \
         --allow-root
 
+    # Create second user (non-admin)
     wp user create \
         "${WP_USER}" "${WP_EMAIL}" \
         --role=author \
@@ -47,4 +50,5 @@ if ! wp core is-installed --allow-root 2>/dev/null; then
         --allow-root
 fi
 
-php-fpm7.4 -F
+# Start PHP-FPM in foreground
+exec php-fpm7.4 -F

@@ -1,4 +1,6 @@
-web
-vs_code/
-.env
-certs
+srcs/.env
+srcs/requirements/nginx/certs/
+secrets/
+*.pem
+.DS_Store
+commands
