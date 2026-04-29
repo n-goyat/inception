@@ -37,3 +37,6 @@ nc -zv 127.0.0.1 2222
 ssh ngoyat@127.0.0.1 -p 2222
 cd ~/inception
 make
+
+docker compose -f srcs/docker-compose.yml ps
+docker logs mariadb --tail 25
