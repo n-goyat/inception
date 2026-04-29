@@ -25,16 +25,16 @@ cd ~/inception
 2. Create the environment file `srcs/.env`:
 ```
 DOMAIN=ngoyat.42.fr
-WP_NAME=wordpress
-WP_DBUSER=wpuser
-WP_PASSWORD=wppass123
-WP_ADMIN_USER=ngoyat
-WP_ADMIN_EMAIL=ngoyat@ngoyat.42.fr
-WP_ADMIN_PASSWORD=adminpass123
-WP_USER=nate
-WP_EMAIL=nate@ngoyat.42.fr
-WP_USER_PASSWORD=userpass123
-DB_ROOT_PASSWORD=rootpass123
+WP_NAME=
+WP_DBUSER=
+WP_PASSWORD=
+WP_ADMIN_USER=
+WP_ADMIN_EMAIL=
+WP_ADMIN_PASSWORD=
+WP_USER=
+WP_EMAIL=
+WP_USER_PASSWORD=
+DB_ROOT_PASSWORD=
 ```
 
 3. Add the domain to hosts:
