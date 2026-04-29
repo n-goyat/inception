@@ -8,6 +8,12 @@ This stack provides a fully functional WordPress website served over HTTPS. It c
 - **WordPress + PHP-FPM** — serves the WordPress application
 - **MariaDB** — stores all WordPress data (posts, users, settings)
 
+## Connecting to the VM
+
+```
+ssh ngoyat@127.0.0.1 -p 2222
+```
+
 ## Starting and Stopping
 
 Start all services:
@@ -89,4 +95,44 @@ docker volume inspect srcs_mariadb_data
 Verify HTTP is not accessible (should fail):
 ```
 curl http://ngoyat.42.fr
+```
+
+Verify WordPress posts (persistence test):
+```
+docker exec wp-php /usr/local/bin/wp post list --path=/var/www/html --allow-root
+```
+
+Login to the database directly:
+```
+docker exec -it mariadb mysql -u wpuser -pwppass123 wordpress
+```
+
+## Persistence Test
+
+To verify data persists across reboots:
+
+1. Create a test post:
+```
+docker exec wp-php /usr/local/bin/wp post create \
+    --post_title="Persistence Test" \
+    --post_status=publish \
+    --path=/var/www/html \
+    --allow-root
+```
+
+2. Reboot the VM:
+```
+sudo reboot
+```
+
+3. Reconnect via SSH and restart:
+```
+ssh ngoyat@127.0.0.1 -p 2222
+cd ~/inception
+make
+```
+
+4. Verify the post is still there:
+```
+docker exec wp-php /usr/local/bin/wp post list --path=/var/www/html --allow-root
 ```
