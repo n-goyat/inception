@@ -18,6 +18,9 @@ newgrp docker
 
 1. Clone the repository:
 ```
+(if necessary)
+scp -P 2222 -r ~/Circle_05/inception_git/ ngoyat@127.0.0.1:/home/ngoyat/
+
 git clone <repo-url> ~/inception
 cd ~/inception
 ```

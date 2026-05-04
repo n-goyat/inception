@@ -83,7 +83,7 @@ openssl s_client -connect ngoyat.42.fr:443 2>/dev/null | grep -E "Protocol|Ciphe
 
 Verify the database is accessible and not empty:
 ```
-docker exec mariadb mysql -u wpuser -pwppass123 wordpress -e "SHOW TABLES;"
+docker exec mariadb mysql -u wpuser -password wordpress -e "SHOW TABLES;"
 ```
 
 Verify volumes point to `/home/ngoyat/data/`:
@@ -104,7 +104,7 @@ docker exec wp-php /usr/local/bin/wp post list --path=/var/www/html --allow-root
 
 Login to the database directly:
 ```
-docker exec -it mariadb mysql -u wpuser -pwppass123 wordpress
+docker exec -it mariadb mysql -u wpuser -password wordpress
 ```
 
 ## Persistence Test
